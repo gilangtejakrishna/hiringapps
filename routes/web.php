@@ -9,6 +9,7 @@ Route::get('/', function () {
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ManagePekerjaanController;
+use App\Http\Controllers\Admin\ManageLamaranMasuk;
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -30,25 +31,76 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('pekerjaan/{pekerjaan}/edit', [ManagePekerjaanController::class, 'edit'])->name('pekerjaan.edit');
         Route::put('pekerjaan/{pekerjaan}', [ManagePekerjaanController::class, 'update'])->name('pekerjaan.update');
         Route::delete('pekerjaan/{pekerjaan}', [ManagePekerjaanController::class, 'destroy'])->name('pekerjaan.destroy');
+
+        Route::get('lamaran', [ManageLamaranMasuk::class, 'index'])->name('lamaran.index');
+        Route::get('lamaran/{id}', [ManageLamaranMasuk::class, 'show'])->name('lamaran.show'); // Perhatikan di sini
+        Route::post('lamaran/{id}', [ManageLamaranMasuk::class, 'update'])->name('lamaran.update');
     });
 
 });
+
+
+
+// use App\Http\Controllers\Pelamar\PelamarAuthController;
+// use App\Http\Middleware\PelamarAuthenticate; 
+// use App\Http\Controllers\Pelamar\PekerjaanController;
+
+// Route::prefix('pelamar')->group(function () {
+//     Route::middleware('guest:pelamar')->group(function () {
+//         Route::get('register', [PelamarAuthController::class, 'showRegisterForm'])->name('pelamar.register');
+//         Route::post('register', [PelamarAuthController::class, 'register']);
+//         Route::get('login', [PelamarAuthController::class, 'showLoginForm'])->name('pelamar.login');
+//         Route::post('login', [PelamarAuthController::class, 'login'])->name('pelamar.login.submit');
+//     });
+
+//     // Halaman Dashboard dan Logout dilindungi oleh middleware PelamarAuthenticate
+//     Route::middleware(PelamarAuthenticate::class)->group(function () {
+//         Route::get('dashboard', [PelamarAuthController::class, 'dashboard'])->name('pelamar.dashboard');
+//         Route::post('logout', [PelamarAuthController::class, 'logout'])->name('pelamar.logout');
+//     });
+// });
+
 
 
 
 use App\Http\Controllers\Pelamar\PelamarAuthController;
+use App\Http\Middleware\PelamarAuthenticate; 
+use App\Http\Controllers\Pelamar\PekerjaanController;
+use App\Http\Controllers\Pelamar\LamaranPekerjaanController; // Pastikan untuk menambahkan controller ini
 
 Route::prefix('pelamar')->group(function () {
     Route::middleware('guest:pelamar')->group(function () {
-    Route::get('register', [PelamarAuthController::class, 'showRegisterForm'])->name('pelamar.register');
-    Route::post('register', [PelamarAuthController::class, 'register']);
-    Route::get('login', [PelamarAuthController::class, 'showLoginForm'])->name('pelamar.login');
-    Route::post('login', [PelamarAuthController::class, 'login'])->name('pelamar.login.post');
-   });
+        Route::get('register', [PelamarAuthController::class, 'showRegisterForm'])->name('pelamar.register');
+        Route::post('register', [PelamarAuthController::class, 'register']);
+        Route::get('login', [PelamarAuthController::class, 'showLoginForm'])->name('pelamar.login');
+        Route::post('login', [PelamarAuthController::class, 'login'])->name('pelamar.login.submit');
+    });
 
-    // Halaman Dashboard dan Logout dilindungi oleh middleware pelamar.auth
-    Route::middleware('auth:pelamar')->group(function () {
-        Route::get('dashboard', [PelamarAuthController::class, 'dashboard'])->name('pelamar.dashboard');
+    // Halaman Dashboard dan Logout dilindungi oleh middleware PelamarAuthenticate
+    Route::middleware(PelamarAuthenticate::class)->group(function () {
+        Route::get('dashboard', [PekerjaanController::class, 'index'])->name('pelamar.dashboard');
         Route::post('logout', [PelamarAuthController::class, 'logout'])->name('pelamar.logout');
+
+        // Rute untuk mengajukan lamaran
+        Route::get('lamaran/create/{id_pekerjaan}', [LamaranPekerjaanController::class, 'create'])->name('pelamar.lamaran.create');
+        Route::post('lamaran', [LamaranPekerjaanController::class, 'store'])->name('pelamar.lamaran.store');
+
+        // Rute untuk melihat status lamaran
+        Route::get('lamaran/status', [LamaranPekerjaanController::class, 'status'])->name('pelamar.lamaran.status');
     });
 });
+
+
+
+
+use Illuminate\Support\Facades\Storage;
+
+Route::get('/download/{filename}', function ($filename) {
+    $path = storage_path('app/berkas/' . $filename);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->download($path);
+})->name('download.file');

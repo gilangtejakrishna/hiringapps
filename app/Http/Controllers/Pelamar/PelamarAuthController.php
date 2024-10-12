@@ -47,38 +47,43 @@ class PelamarAuthController extends Controller
 
     public function login(Request $request)
     {
+        // Validasi data login
         $this->validate($request, [
             'email' => 'required|email',
-            'password' => 'required|string|min:8',
+            'password' => 'required',
         ]);
     
-        // Ambil pengguna berdasarkan email
-        $pelamar = Pelamar::where('email', $request->email)->first();
-    
-        // Cek jika pengguna ditemukan
-        if ($pelamar && Hash::check($request->password, $pelamar->password)) {
-            // Jika password cocok, log pengguna in
-            Auth::guard('pelamar')->login($pelamar);
-            return redirect()->route('pelamar.dashboard')->with('success', 'Login berhasil!');
+        // Cek kredensial pelamar
+        if (Auth::guard('pelamar')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            // Jika berhasil, redirect ke dashboard
+            return redirect()->route('pelamar.dashboard');
         }
     
-        return redirect()->route('pelamar.login')->with('error', 'Email atau password salah.');
+        // Jika gagal, kembali ke halaman login dengan pesan error
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ]);
     }
-
-
+    
+    
     
 
     
     // Tampilkan dashboard pelamar
     public function dashboard()
     {
+        // Ambil data pelamar yang sedang login
+        $pelamar = Auth::guard('pelamar')->user();
+
         // Pastikan hanya pelamar yang terautentikasi yang dapat mengakses dashboard ini
-        if (!Auth::guard('pelamar')->check()) {
+        if (!$pelamar) {
             return redirect()->route('pelamar.login'); // Redirect ke login jika tidak terautentikasi
         }
 
-        return view('pelamar.dashboard'); // Tampilkan halaman dashboard
+        // Kirim data pelamar ke view menggunakan compact
+        return view('pelamar.dashboard', compact('pelamar')); // Tampilkan halaman dashboard dengan data pelamar
     }
+
     
     // logout
     public function logout(Request $request)

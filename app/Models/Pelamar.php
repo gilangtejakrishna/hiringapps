@@ -13,10 +13,21 @@ class Pelamar extends Model implements Authenticatable
 
     protected $table = 'pelamars';
 
+    // Tentukan primary key yang digunakan
+    protected $primaryKey = 'id_pelamar';
+
+    // Jika primary key bukan 'id', tambahkan ini
+    public $incrementing = true; // Atur menjadi false jika menggunakan UUID atau format lain
+
     protected $fillable = [
-        'password', 
+        'password',
         'nama_lengkap',
         'email',
+    ];
+
+    // Jika kolom `password` akan disimpan dalam bentuk hash, tambahkan properti berikut
+    protected $hidden = [
+        'password',
     ];
 
     // Relasi ke model LamaranPekerjaan

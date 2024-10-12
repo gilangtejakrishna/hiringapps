@@ -9,13 +9,8 @@
 </head>
 <body class="bg-gray-100">
     <div class="flex justify-center items-center min-h-screen">
-        @if(session('error'))
-            <div class="mb-4 text-red-600 text-center">
-                {{ session('error') }}
-            </div>
-        @endif
         <div class="w-full max-w-md">
-            <form action="{{ route('pelamar.login.post') }}" method="POST" class="bg-white shadow-md rounded-lg px-10 py-10">
+            <form action="{{ route('pelamar.login.submit') }}" method="POST" class="bg-white shadow-md rounded-lg px-10 py-10">
                 @csrf
                 <h2 class="text-2xl font-bold text-center mb-6 text-gray-700">Login Pelamar</h2>
 

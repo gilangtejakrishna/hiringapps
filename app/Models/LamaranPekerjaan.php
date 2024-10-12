@@ -11,6 +11,9 @@ class LamaranPekerjaan extends Model
 
     protected $table = 'lamaran_pekerjaans';
 
+    // Mengatur primary key
+    protected $primaryKey = 'id_lamaran';
+
     protected $fillable = [
         'id_pelamar',
         'id_pekerjaan',
