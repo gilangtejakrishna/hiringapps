@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="flex items-center justify-between mb-6">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline w-full">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline w-full">
                         Login
                     </button>
                 </div>

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto mt-8">
-    <h1 class="text-2xl font-semibold">Daftar Pekerjaan</h1>
+    <h1 class="text-2xl mb-5 font-semibold">Daftar Pekerjaan</h1>
     {{-- <a href="{{ route('admin.pekerjaan.create') }}" class="bg-black text-white px-4 py-2 rounded mt-4">Tambah Pekerjaan</a> --}}
     <a href="{{ route('admin.pekerjaan.create') }}" class="bg-black text-white px-4 py-2 rounded mt-4">Tambah Pekerjaan</a>
 
@@ -16,9 +16,9 @@
     <table class="min-w-full border-collapse border border-gray-200 mt-4">
         <thead>
             <tr>
-                <th class="border border-gray-300 px-4 py-2">Nama</th>
-                <th class="border border-gray-300 px-4 py-2">Status</th>
-                <th class="border border-gray-300 px-4 py-2">Aksi</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Nama</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Aksi</th>
             </tr>
         </thead>
         <tbody>

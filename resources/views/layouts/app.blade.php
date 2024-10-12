@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Dashboard')</title>
+    <title>@yield('title', 'Dashboard Pelamar')</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -14,16 +14,15 @@
     <!-- Navbar -->
     <nav class="bg-white shadow-md p-4">
         <div class="container mx-auto flex justify-between items-center">
-            <div class="text-xl font-bold text-black">Admin Panel</div>
+            <div class="text-xl font-bold text-black">Dashboard Pelamar</div>
             <div>
-                <a href="{{ route('admin.dashboard') }}" class="text-black hover:text-gray-700 px-4">Dashboard</a>
-                <a href="{{ route('admin.pekerjaan.index') }}" class="text-black hover:text-gray-700 px-4">Pekerjaan</a>
-                <a href="{{ route('admin.lamaran.index') }}" class="text-black hover:text-gray-700 px-4">Lamaran masuk</a>
-                <a href="{{ route('admin.logout') }}"
+                <a href="{{ route('pelamar.dashboard') }}" class="text-black hover:text-gray-700 px-4">Dashboard</a>
+                <a href="{{ route('pelamar.lamaran.status') }}" class="text-black hover:text-gray-700 px-4">Status</a>
+                <a href="{{ route('pelamar.logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                     class="text-red-600 px-4">Logout</a>
 
-                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="hidden">
+                <form id="logout-form" action="{{ route('pelamar.logout') }}" method="POST" class="hidden">
                     @csrf
                 </form>
             </div>
