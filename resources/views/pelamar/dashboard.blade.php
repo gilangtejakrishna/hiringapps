@@ -24,7 +24,15 @@
                     <td class="border border-gray-300 px-4 py-2">{{ $pekerjaan->nama }}</td>
                     <td class="border border-gray-300 px-4 py-2">{{ $pekerjaan->status }}</td>
                     <td class="border border-gray-300 px-4 py-2">
-                        <a href="{{ route('pelamar.lamaran.create', $pekerjaan->id_pekerjaan) }}" class="text-blue-600">Ajukan Lamaran</a>
+                        @php
+                            $sudahDiajukan = $lamarans->where('id_pekerjaan', $pekerjaan->id_pekerjaan)->count() > 0;
+                        @endphp
+
+                        @if ($sudahDiajukan)
+                            <span class="text-gray-600">Diajukan</span>
+                        @else
+                            <a href="{{ route('pelamar.lamaran.create', $pekerjaan->id_pekerjaan) }}" class="text-blue-600">Ajukan Lamaran</a>
+                        @endif
                     </td>
                 </tr>
             @endforeach

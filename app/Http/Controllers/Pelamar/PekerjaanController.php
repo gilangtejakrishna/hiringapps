@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Http\Controllers\Pelamar;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pekerjaan;
+use App\Models\LamaranPekerjaan; // Pastikan untuk menambahkan ini
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +24,10 @@ class PekerjaanController extends Controller
         // Ambil semua data pekerjaan
         $pekerjaans = Pekerjaan::all();
 
-        // Kirim data pekerjaan dan pelamar ke view dashboard
-        return view('pelamar.dashboard', compact('pelamar', 'pekerjaans'));
+        // Ambil semua lamaran yang diajukan oleh pelamar ini
+        $lamarans = LamaranPekerjaan::where('id_pelamar', $pelamar->id_pelamar)->get();
+
+        // Kirim data pekerjaan, lamaran, dan pelamar ke view dashboard
+        return view('pelamar.dashboard', compact('pelamar', 'pekerjaans', 'lamarans'));
     }
 }
